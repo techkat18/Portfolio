@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katrinca - Creative Developer & Designer</title>
+  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink:       #08080d;
+      --surface:   #111116;
+      --surface-2: #15151c;
+      --border:    rgba(255,255,255,0.07);
+      --border-lit:rgba(255,255,255,0.15);
+      --txt:       #eeeef5;
+      --txt-dim:   rgba(255,255,255,0.38);
+      --violet:    #8b5cf6;
+      --teal:      #14b8a6;
+      --rose:      #f43f5e;
+      --font-serif:'DM Serif Display', Georgia, serif;
+      --font-sans: 'DM Sans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: var(--font-sans); background: var(--ink); color: var(--txt); overflow-x: hidden; }
+
+    /* ============================================================
+       ORIGINAL HERO SUPPORT STYLES
+    ============================================================ */
+    @keyframes floatSlow {
+      0%,100%{ transform: translateY(0px) rotate(0deg); }
+      50%    { transform: translateY(-30px) rotate(5deg); }
+    }
+    @keyframes particleRise {
+      0%  { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      100%{ transform: translateY(-100px) scale(1); opacity: 0; }
+    }
+    @keyframes shimmerEffect {
+      0%  { background-position: -1000px 0; }
+      100%{ background-position: 1000px 0; }
+    }
+
+    .hero-enhanced {
+      min-height: 100vh; display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .hero-enhanced::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 30% 50%, rgba(168,85,247,0.15), transparent 50%),
+                  radial-gradient(circle at 70% 50%, rgba(6,182,212,0.15), transparent 50%);
+      animation: floatSlow 20s ease-in-out infinite;
+    }
+
+    .particle-container { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .particle {
+      position: absolute; background: linear-gradient(135deg, var(--accent-purple, #8b5cf6), var(--accent-cyan, #14b8a6));
+      border-radius: 50%; opacity: 0; animation: particleRise 15s infinite;
+    }
+    .particle:nth-child(1){ left:10%; width:4px; height:4px; animation-delay:0s }
+    .particle:nth-child(2){ left:25%; width:6px; height:6px; animation-delay:3s }
+    .particle:nth-child(3){ left:40%; width:3px; height:3px; animation-delay:6s }
+    .particle:nth-child(4){ left:55%; width:5px; height:5px; animation-delay:9s }
+    .particle:nth-child(5){ left:70%; width:4px; height:4px; animation-delay:12s }
+    .particle:nth-child(6){ left:85%; width:6px; height:6px; animation-delay:2s }
+
+    .hero-badge { position: relative; overflow: hidden; }
+    .hero-badge::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      animation: shimmerEffect 3s infinite;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 1.5rem; padding: 2rem;
+      transition: all 0.4s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden;
+    }
+    .stat-card::before {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(168,85,247,0.1), transparent);
+      transition: left 0.6s ease;
+    }
+    .stat-card:hover::before { left: 100%; }
+    .stat-card:hover { transform: translateY(-10px); border-color: rgba(168,85,247,0.3); box-shadow: 0 20px 60px rgba(168,85,247,0.2); }
+
+    /* ============================================================
+       ANIMATIONS (NEW SECTIONS)
+    ============================================================ */
+    @keyframes fadeUp  { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes ticker  { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    /* ============================================================
+       TICKER
+    ============================================================ */
+    .ticker-wrap {
+      overflow: hidden;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 0.65rem 0; background: rgba(255,255,255,0.015);
+      margin-bottom: 5rem;
+    }
+    .ticker-track { display: flex; width: max-content; animation: ticker 28s linear infinite; }
+    .ticker-item {
+      font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.18em;
+      color: rgba(255,255,255,0.3); padding: 0 2rem;
+      display: flex; align-items: center; gap: 1rem; white-space: nowrap;
+    }
+    .ticker-item span { color: var(--violet); }
+
+    /* ============================================================
+       SECTION SHELL
+    ============================================================ */
+    .home-section { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .home-section--padded { padding-bottom: 6rem; }
+
+    .sec-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      border-bottom: 1px solid var(--border); padding-bottom: 1.25rem; margin-bottom: 2.5rem;
+    }
+    .sec-eyebrow {
+      font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal);
+      display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;
+    }
+    .sec-eyebrow::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; }
+    .sec-title { font-family: var(--font-serif); font-size: 2.2rem; }
+    .sec-title em { font-style: italic; color: var(--violet); }
+    .sec-count { font-family: var(--font-mono); font-size: 0.7rem; color: var(--txt-dim); letter-spacing: 0.1em; }
+
+    /* ============================================================
+       FEATURED PROJECTS
+    ============================================================ */
+    .featured-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 2rem;
+    }
+
+    .feat-card {
+      position: relative; border-radius: 18px; overflow: hidden;
+      border: 1px solid var(--border); height: 400px;
+      cursor: pointer;
+      transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s;
+      animation: fadeUp 0.6s ease both;
+    }
+    .feat-card:hover {
+      border-color: var(--border-lit);
+      box-shadow: 0 24px 70px rgba(0,0,0,0.6);
+      transform: translateY(-4px);
+    }
+
+    .feat-card img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center top;
+      display: block; filter: brightness(0.7);
+      transition: transform 0.7s cubic-bezier(0.22,1,0.36,1), filter 0.4s;
+    }
+    .feat-card:hover img { transform: scale(1.06); filter: brightness(0.6); }
+
+    .feat-card__num {
+      position: absolute; top: 1.25rem; left: 1.25rem;
+      font-family: var(--font-mono); font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.12em; color: rgba(255,255,255,0.9);
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 0.3rem 0.7rem; border-radius: 4px;
+    }
+
+    .feat-card__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 2rem;
+      transform: translateY(calc(100% - 90px));
+      transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    }
+    .feat-card:hover .feat-card__overlay { transform: translateY(0); }
+
+    .feat-card__category {
+      font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal);
+      display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem;
+    }
+    .feat-card__category::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--teal); }
+
+    .feat-card__title { font-family: var(--font-serif); font-size: 1.7rem; margin-bottom: 0.75rem; }
+
+    .feat-card__desc {
+      font-size: 0.83rem; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 1rem;
+      opacity: 0; transform: translateY(10px); transition: opacity 0.4s 0.1s, transform 0.4s 0.1s;
+    }
+    .feat-card:hover .feat-card__desc { opacity: 1; transform: translateY(0); }
+
+    .feat-card__tags {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+      opacity: 0; transform: translateY(10px); transition: opacity 0.4s 0.15s, transform 0.4s 0.15s;
+    }
+    .feat-card:hover .feat-card__tags { opacity: 1; transform: translateY(0); }
+    .feat-tag {
+      font-family: var(--font-mono); font-size: 0.62rem; font-weight: 500;
+      padding: 0.22rem 0.55rem; border-radius: 4px;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.6);
+    }
+
+    .view-all-row { text-align: center; padding-bottom: 6rem; }
+    .view-all-btn {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.85rem 2rem; border-radius: 10px;
+      background: linear-gradient(135deg, var(--violet), var(--teal));
+      color: #fff; font-weight: 700; font-size: 0.9rem;
+      text-decoration: none; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .view-all-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(139,92,246,0.4); }
+
+    /* ============================================================
+       SERVICES
+    ============================================================ */
+    .services-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;
+      margin-bottom: 6rem;
+    }
+
+    .svc-card {
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 18px; padding: 2.5rem;
+      transition: border-color 0.3s, transform 0.3s; position: relative; overflow: hidden;
+      animation: fadeUp 0.6s ease both;
+    }
+    .svc-card:hover { border-color: var(--border-lit); transform: translateY(-4px); }
+    .svc-card::before {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background: radial-gradient(circle at 80% 20%, rgba(139,92,246,0.07), transparent 60%);
+    }
+
+    .svc-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 1.5rem;
+      transition: transform 0.3s;
+    }
+    .svc-card:hover .svc-icon { transform: scale(1.1) rotate(-5deg); }
+
+    .svc-title { font-family: var(--font-serif); font-size: 1.5rem; margin-bottom: 0.75rem; }
+    .svc-desc  { font-size: 0.85rem; color: var(--txt-dim); line-height: 1.7; margin-bottom: 1.25rem; }
+
+    .svc-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .svc-tag {
+      font-family: var(--font-mono); font-size: 0.65rem; font-weight: 600;
+      padding: 0.28rem 0.65rem; border-radius: 5px;
+      background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.22); color: #c4b5fd;
+    }
+
+    /* ============================================================
+       CTA
+    ============================================================ */
+    .cta-wrap { max-width: 1200px; margin: 0 auto 6rem; padding: 0 2rem; }
+    .cta-inner {
+      padding: 4rem; text-align: center;
+      background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(20,184,166,0.07));
+      border: 1px solid rgba(139,92,246,0.2); border-radius: 22px;
+      position: relative; overflow: hidden;
+    }
+    .cta-inner::before {
+      content:''; position:absolute; top:-60px; left:50%; transform:translateX(-50%);
+      width:400px; height:200px;
+      background:radial-gradient(ellipse, rgba(139,92,246,0.15), transparent);
+      pointer-events:none;
+    }
+    .cta-icon {
+      font-size: 3rem; margin-bottom: 1.25rem;
+      background: linear-gradient(135deg, var(--violet), var(--teal));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      display: inline-block;
+    }
+    .cta-title { font-family: var(--font-serif); font-size: 2.8rem; margin-bottom: 1rem; position: relative; }
+    .cta-title em { font-style: italic; color: var(--violet); }
+    .cta-sub { font-size: 1rem; color: var(--txt-dim); margin-bottom: 2rem; line-height: 1.7; }
+    .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .cta-btn-primary {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.9rem 2.2rem; border-radius: 10px;
+      background: linear-gradient(135deg, var(--violet), var(--teal));
+      color:#fff; font-weight:700; font-size:0.92rem;
+      text-decoration:none; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cta-btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 35px rgba(139,92,246,0.4); }
+    .cta-btn-outline {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.9rem 2.2rem; border-radius: 10px;
+      background: transparent; border: 1px solid var(--border-lit);
+      color: var(--txt); font-weight: 600; font-size: 0.92rem;
+      text-decoration: none; transition: border-color 0.2s, background 0.2s;
+    }
+    .cta-btn-outline:hover { border-color: var(--violet); background: rgba(139,92,246,0.08); }
+
+    .trust-row {
+      display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;
+      padding-top: 2rem; border-top: 1px solid var(--border);
+    }
+    .trust-item { text-align: center; }
+    .trust-item i { font-size: 1.6rem; margin-bottom: 0.4rem; display: block; }
+    .trust-item span { font-size: 0.82rem; color: var(--txt-dim); }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .site-footer {
+      border-top: 1px solid var(--border); text-align: center;
+      padding: 2.5rem 2rem; font-size: 0.85rem; color: rgba(255,255,255,0.3);
+    }
+    .footer-socials { display:flex; justify-content:center; gap:1rem; margin-bottom:1.25rem; }
+    .footer-socials a {
+      width:36px; height:36px; border-radius:8px; border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+      color:rgba(255,255,255,0.35); text-decoration:none; font-size:0.85rem; transition:all 0.2s;
+    }
+    .footer-socials a:hover { border-color:var(--violet); color:var(--violet); background:rgba(139,92,246,0.08); }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 900px) {
+      .featured-grid, .services-grid { grid-template-columns: 1fr; }
+      .feat-card { height: 340px; }
+      .feat-card__overlay { transform: translateY(0); }
+      .feat-card__desc, .feat-card__tags { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 600px) {
+      .cta-inner { padding: 2.5rem 1.5rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="grain-overlay"></div>
+
+  <!-- NAV -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">Katrinca</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="skills.html">Skills</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="menu-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HERO — original preserved exactly
+  ============================================================ -->
+  <section class="hero section hero-enhanced">
+    <div class="particle-container">
+      <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+      <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    </div>
+    <div class="gradient-orb orb-1"></div>
+    <div class="gradient-orb orb-2"></div>
+
+    <div class="container" style="position:relative;z-index:10;">
+      <div style="text-align:center;">
+        <div class="fade-in" style="animation-delay:0.2s;margin-bottom:2rem;">
+          <span class="hero-badge" style="display:inline-block;padding:0.75rem 1.5rem;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:50px;font-size:0.9rem;font-weight:600;letter-spacing:2px;position:relative;">
+            <i class="fas fa-sparkles" style="margin-right:0.5rem;color:var(--accent-cyan);"></i>
+            CREATIVE DEVELOPER
+          </span>
+        </div>
+
+        <h1 class="fade-in" style="animation-delay:0.4s;margin-bottom:2rem;font-size:clamp(3rem,8vw,6rem);line-height:1.1;">
+          Crafting<br>
+          <span class="gradient-text" style="display:inline-block;animation:floatSlow 6s ease-in-out infinite;">Digital</span><br>
+          Experiences
+        </h1>
+
+        <p class="fade-in" style="animation-delay:0.6s;font-size:1.25rem;color:var(--text-secondary);max-width:700px;margin:0 auto 3rem;line-height:1.8;">
+          Interactive designer &amp; developer specializing in
+          <span style="color:var(--accent-purple);font-weight:600;">scroll-driven animations</span>,
+          creative interfaces, and memorable web experiences that leave a
+          <span style="color:var(--accent-cyan);font-weight:600;">lasting impression</span>.
+        </p>
+
+        <div class="fade-in" style="animation-delay:0.8s;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:6rem;">
+          <a href="projects.html" class="btn btn-primary">
+            <span style="position:relative;z-index:1;">View Projects <i class="fas fa-arrow-right" style="margin-left:0.5rem;"></i></span>
+          </a>
+          <a href="contact.html" class="btn btn-outline">
+            <span style="position:relative;z-index:1;"><i class="fas fa-envelope" style="margin-right:0.5rem;"></i>Get in Touch</span>
+          </a>
+        </div>
+
+        <div class="fade-in" style="animation-delay:1s;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2rem;max-width:900px;margin:0 auto 6rem;">
+          <div class="stat-card">
+            <div style="font-size:3.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent-purple),var(--accent-cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:'Playfair Display',serif;" class="counter" data-target="10">0</div>
+            <div style="color:var(--text-secondary);font-size:0.95rem;margin-top:0.75rem;font-weight:500;">Projects Completed</div>
+            <div style="margin-top:0.5rem;"><i class="fas fa-check-circle" style="color:var(--accent-purple);font-size:1.25rem;"></i></div>
+          </div>
+          <div class="stat-card">
+            <div style="font-size:3.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent-cyan),var(--accent-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:'Playfair Display',serif;" class="counter" data-target="3">0</div>
+            <div style="color:var(--text-secondary);font-size:0.95rem;margin-top:0.75rem;font-weight:500;">Happy Clients</div>
+            <div style="margin-top:0.5rem;"><i class="fas fa-heart" style="color:var(--accent-cyan);font-size:1.25rem;"></i></div>
+          </div>
+          <div class="stat-card">
+            <div style="font-size:3.5rem;font-weight:700;background:linear-gradient(135deg,var(--accent-purple),var(--accent-pink));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-family:'Playfair Display',serif;" class="counter" data-target="2">0</div>
+            <div style="color:var(--text-secondary);font-size:0.95rem;margin-top:0.75rem;font-weight:500;">Years Experience</div>
+            <div style="margin-top:0.5rem;"><i class="fas fa-star" style="color:var(--accent-purple);font-size:1.25rem;"></i></div>
+          </div>
+        </div>
+
+        <div class="fade-in" style="animation-delay:1.2s;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:0.75rem;color:var(--text-secondary);">
+            <span style="font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;font-weight:600;">Scroll to Explore</span>
+            <div style="width:2px;height:50px;background:linear-gradient(to bottom,var(--accent-purple),transparent);position:relative;">
+              <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:6px;height:6px;background:var(--accent-purple);border-radius:50%;animation:floatSlow 2s ease-in-out infinite;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker-track">
+      <div class="ticker-item">Web Development <span>✦</span></div>
+      <div class="ticker-item">UI/UX Design <span>✦</span></div>
+      <div class="ticker-item">Java Systems <span>✦</span></div>
+      <div class="ticker-item">Mobile Apps <span>✦</span></div>
+      <div class="ticker-item">Creative Animation <span>✦</span></div>
+      <div class="ticker-item">Responsive Design <span>✦</span></div>
+      <div class="ticker-item">Figma Prototyping <span>✦</span></div>
+      <div class="ticker-item">Open to Collaborate <span>✦</span></div>
+      <div class="ticker-item">Web Development <span>✦</span></div>
+      <div class="ticker-item">UI/UX Design <span>✦</span></div>
+      <div class="ticker-item">Java Systems <span>✦</span></div>
+      <div class="ticker-item">Mobile Apps <span>✦</span></div>
+      <div class="ticker-item">Creative Animation <span>✦</span></div>
+      <div class="ticker-item">Responsive Design <span>✦</span></div>
+      <div class="ticker-item">Figma Prototyping <span>✦</span></div>
+      <div class="ticker-item">Open to Collaborate <span>✦</span></div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       FEATURED WORK
+  ============================================================ -->
+  <div class="home-section home-section--padded">
+    <div class="sec-header">
+      <div>
+        <div class="sec-eyebrow">Portfolio</div>
+        <div class="sec-title">Featured <em>Work</em></div>
+      </div>
+      <div class="sec-count">02 of 10</div>
+    </div>
+
+    <div class="featured-grid">
+      <div class="feat-card" style="animation-delay:0.05s;">
+        <img src="img/TitaTrishSalon.png" alt="Tita Trish Salon">
+        <span class="feat-card__num">01</span>
+        <div class="feat-card__overlay">
+          <div class="feat-card__category">Salon Web App</div>
+          <div class="feat-card__title">Tita Trish Salon</div>
+          <div class="feat-card__desc">A digital space showcasing the salon's services, booking options, and team — built with a clean, modern aesthetic.</div>
+          <div class="feat-card__tags">
+            <span class="feat-tag">HTML</span>
+            <span class="feat-tag">CSS</span>
+            <span class="feat-tag">JavaScript</span>
+            <span class="feat-tag">Responsive</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feat-card" style="animation-delay:0.1s;">
+        <img src="img/cnsc.jpg" alt="CNSC SpotOn">
+        <span class="feat-card__num">02</span>
+        <div class="feat-card__overlay">
+          <div class="feat-card__category">Mobile Navigation App</div>
+          <div class="feat-card__title">CNSC SpotOn</div>
+          <div class="feat-card__desc">No more lost walks — a GPS-powered campus navigation app for students and visitors of CNSC.</div>
+          <div class="feat-card__tags">
+            <span class="feat-tag">Android Studio</span>
+            <span class="feat-tag">Java</span>
+            <span class="feat-tag">GPS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view-all-row">
+    <a href="projects.html" class="view-all-btn">
+      <i class="fas fa-grid-2"></i> View All Projects <i class="fas fa-arrow-right"></i>
+    </a>
+  </div>
+
+  <!-- ============================================================
+       SERVICES
+  ============================================================ -->
+  <div class="home-section">
+    <div class="sec-header">
+      <div>
+        <div class="sec-eyebrow" style="color:var(--rose);">What I Do</div>
+        <div class="sec-title">My <em>Services</em></div>
+      </div>
+      <div class="sec-count">02 offerings</div>
+    </div>
+
+    <div class="services-grid">
+      <div class="svc-card" style="animation-delay:0.05s;">
+        <div class="svc-icon" style="background:linear-gradient(135deg,var(--violet),#ec4899);">
+          <i class="fas fa-code" style="color:#fff;"></i>
+        </div>
+        <div class="svc-title">Development</div>
+        <div class="svc-desc">Building beautiful, performant web experiences with modern frameworks and best practices. Clean code, scalable architecture, pixel-perfect execution.</div>
+        <div class="svc-tags">
+          <span class="svc-tag">Java</span>
+          <span class="svc-tag">HTML</span>
+          <span class="svc-tag">CSS</span>
+          <span class="svc-tag">JavaScript</span>
+          <span class="svc-tag">PHP</span>
+        </div>
+      </div>
+
+      <div class="svc-card" style="animation-delay:0.1s;">
+        <div class="svc-icon" style="background:linear-gradient(135deg,var(--teal),var(--violet));">
+          <i class="fas fa-palette" style="color:#fff;"></i>
+        </div>
+        <div class="svc-title">Design</div>
+        <div class="svc-desc">Creating cohesive visual systems with careful attention to typography, color, and composition. A user-centered approach in every pixel.</div>
+        <div class="svc-tags">
+          <span class="svc-tag">Figma</span>
+          <span class="svc-tag">UI/UX</span>
+          <span class="svc-tag">Canva</span>
+          <span class="svc-tag">Blender</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       CTA
+  ============================================================ -->
+  <div class="cta-wrap">
+    <div class="cta-inner">
+      <div class="cta-icon"><i class="fas fa-rocket"></i></div>
+      <h2 class="cta-title">Let's Create<br><em>Something Amazing</em></h2>
+      <p class="cta-sub">Have a project in mind? Let's collaborate and bring your vision to life with beautiful design and seamless interactions.</p>
+      <div class="cta-btns">
+        <a href="contact.html" class="cta-btn-primary">
+          <i class="fas fa-envelope"></i> Start a Conversation <i class="fas fa-arrow-right"></i>
+        </a>
+        <a href="projects.html" class="cta-btn-outline">
+          <i class="fas fa-folder-open"></i> View My Work
+        </a>
+      </div>
+      <div class="trust-row">
+        <div class="trust-item">
+          <i class="fas fa-bolt" style="color:var(--violet);"></i>
+          <span>Fast Turnaround</span>
+        </div>
+        <div class="trust-item">
+          <i class="fas fa-shield-halved" style="color:var(--teal);"></i>
+          <span>Quality Assured</span>
+        </div>
+        <div class="trust-item">
+          <i class="fas fa-headset" style="color:var(--rose);"></i>
+          <span>24/7 Support</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-socials">
+      <a href="https://github.com/techkat18" target="_blank"><i class="fab fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/katrinca-claire-ibita-760782335" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+      <a href="https://www.facebook.com/katrincaclaire.ibita" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    </div>
+    <p>&copy; 2025 Katrinca Claire T. Ibita &nbsp;·&nbsp; Designed &amp; Developed with <span style="color:#f43f5e;">♥</span></p>
+    <p style="margin-top:0.4rem;opacity:0.5;font-size:0.78rem;">Inspired by the beauty of motion and interaction</p>
+  </footer>
+
+  <script src="main.js"></script>
+  <script>
+    /* Counter animation */
+    const counters = document.querySelectorAll('.counter');
+    const counterObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const target = parseInt(entry.target.dataset.target);
+        const step = target / (2000 / 16);
+        let cur = 0;
+        const t = setInterval(() => {
+          cur += step;
+          if (cur >= target) { entry.target.textContent = target; clearInterval(t); }
+          else { entry.target.textContent = Math.floor(cur); }
+        }, 16);
+        counterObs.unobserve(entry.target);
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(c => counterObs.observe(c));
+
+    /* Parallax orbs */
+    window.addEventListener('mousemove', (e) => {
+      const mouseX = e.clientX / window.innerWidth;
+      const mouseY = e.clientY / window.innerHeight;
+      document.querySelectorAll('.gradient-orb').forEach((orb, i) => {
+        const speed = (i + 1) * 20;
+        orb.style.transform = `translate(${(mouseX - 0.5) * speed}px, ${(mouseY - 0.5) * speed}px)`;
+      });
+    });
+
+    /* Mobile nav */
+    document.querySelector('.menu-toggle')?.addEventListener('click', function() {
+      document.querySelector('.nav-links')?.classList.toggle('active');
+    });
+  </script>
+
+  <style>
+    .nav-links { transition: left 0.3s ease !important; }
+    .nav-links.active { left:0!important;display:flex!important;visibility:visible!important;opacity:1!important; }
+    @media(max-width:900px){
+      .nav-links{display:flex;opacity:0}
+      .nav-links.active{opacity:1!important}
+      .nav-links a{color:white!important;font-size:1.5rem!important;padding:1rem 0!important;display:block!important;visibility:visible!important}
+      .nav-links li{display:block!important;opacity:1!important;visibility:visible!important}
+    }
+  </style>
+</body>
+</html>
